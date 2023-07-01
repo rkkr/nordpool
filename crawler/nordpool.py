@@ -6,11 +6,11 @@ API_URL = 'https://www.nordpoolgroup.com/api/marketdata/page/53?currency=,EUR,,E
 TIMEOUT = 60
 
 def _parse_dt(date, time, fold):
-    
     _date = datetime.strptime(date, "%d-%m-%Y").date()
     _time = datetime.fromisoformat(time).time()
     _datetime = datetime.combine(_date, _time, ZoneInfo('Europe/Stockholm'))
     if fold:
+        # duplicate rows when daylight saving rotates
         _datetime = _datetime.replace(fold=1)
 
     return _datetime.astimezone(timezone.utc)
@@ -39,7 +39,7 @@ def _parse_json(json):
 
             _date = column['Name']
             _datetime = _parse_dt(_date, _time, _prev_time == _time)
-            _price = float(column['Value'].replace(',','.'))
+            _price = float(column['Value'].replace(',', '.'))
             _hour_prices.append({'datetime': _datetime, 'price_np': _price})
 
         _prev_time = _time
@@ -47,8 +47,3 @@ def _parse_json(json):
     _hour_prices.sort(key=lambda x: x['datetime'])
 
     return _hour_prices
-
-if __name__ == "__main__":
-    prices = download()
-    for price in prices:
-        print(price)
