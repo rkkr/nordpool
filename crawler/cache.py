@@ -2,14 +2,14 @@ import json, os
 from datetime import datetime
 
 DIR_PATH = os.path.dirname(os.path.realpath(__file__))
-FILE_PATH = os.path.join(DIR_PATH, 'prices.json')
+PRICE_PATH = os.path.join(os.path.dirname(DIR_PATH), 'prices.json')
 
 def save(prices):
-    with open(FILE_PATH, 'w') as write:
+    with open(PRICE_PATH, 'w') as write:
         json.dump(prices, write, indent = 4, default = str)
 
 def read():
-    with open(FILE_PATH, 'r') as read:
+    with open(PRICE_PATH, 'r') as read:
         prices = json.load(read)
 
     for price in prices:
@@ -18,7 +18,7 @@ def read():
     return prices
 
 def needs_update():
-    if not os.path.isfile(FILE_PATH):
+    if not os.path.isfile(PRICE_PATH):
         return True
     
     try:
