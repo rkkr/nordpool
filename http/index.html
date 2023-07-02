@@ -1,8 +1,30 @@
 <html>
-<title>Attributes</title>
-<ul>
-  {% for price in prices %}
-  <li>{{price.datetime}} {{price.price}}</li>
+  <style>
+    table, th, td {
+      border: 1px solid black;
+      border-collapse: collapse;
+      padding: 5px;
+    }
+  </style>
+<title>Nordpool</title>
+<table>
+  <tr>
+    <th></th>
+    {% for day in days %}
+    <th>{{ day }}</th>
+    {% endfor %}
+  </tr>
+  {% for hour in range(24) %}
+    <tr>
+      <td>{{hour}}</td>
+      {% for day in days %}
+      <td>{% for price in prices %}
+          {% if price.day == day and price.hour == hour %}
+            {{ "%.2f"|format(price.price) }}
+          {% endif %}
+        {% endfor %}
+      {% endfor %}</td>
+    </tr>
   {% endfor %}
-</ul>
+</table>
 </html>
