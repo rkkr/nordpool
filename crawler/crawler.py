@@ -1,6 +1,9 @@
-import nordpool, ignitis, cache, logging
+import nordpool, ignitis, cache
+import os, logging
 
-logging.basicConfig(filename='crawler.log', filemode='w', format='%(name)s - %(levelname)s - %(message)s')
+DIR_PATH = os.path.dirname(os.path.realpath(__file__))
+
+logging.basicConfig(filename=os.path.join(DIR_PATH, 'crawler.log'), filemode='w', format='%(asctime)s - %(levelname)s - %(message)s')
 
 if __name__ == "__main__":
     try:

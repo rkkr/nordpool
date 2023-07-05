@@ -2,11 +2,11 @@ from miio import ChuangmiPlug
 from config import config
 import os, sys, logging
 
-logging.basicConfig(filename='update.log', filemode='w', format='%(name)s - %(levelname)s - %(message)s')
-
 DIR_PATH = os.path.dirname(os.path.realpath(__file__))
 sys.path.append(os.path.dirname(DIR_PATH))
 from crawler import cache
+
+logging.basicConfig(filename=os.path.join(DIR_PATH, 'update.log'), filemode='w', format='%(asctime)s - %(levelname)s - %(message)s', level=logging.INFO)
 
 if __name__ == "__main__":
     try:
