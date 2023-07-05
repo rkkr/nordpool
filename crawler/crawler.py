@@ -1,11 +1,16 @@
-import nordpool, ignitis, cache
+import nordpool, ignitis, cache, logging
+
+logging.basicConfig(filename='crawler.log', filemode='w', format='%(name)s - %(levelname)s - %(message)s')
 
 if __name__ == "__main__":
-    if cache.needs_update():
-        print('Updating cache')
+    try:
+        if cache.needs_update():
+            logging.info('Updating cache')
 
-        prices = nordpool.download()
-        prices = ignitis.add_price(prices)
-        cache.save(prices)
-    else:
-        print('Cache up to date')
+            prices = nordpool.download()
+            prices = ignitis.add_price(prices)
+            cache.save(prices)
+        else:
+            logging.info('Cache up to date')
+    except Exception as e:
+        logging.excepetion('Exception')

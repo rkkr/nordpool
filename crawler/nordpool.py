@@ -43,7 +43,7 @@ def _parse_json(json):
             _hour_prices.append({'datetime': _datetime, 'price_np': _price})
 
         _prev_time = _time
-    
+
     _hour_prices.sort(key=lambda x: x['datetime'])
 
     return _hour_prices
