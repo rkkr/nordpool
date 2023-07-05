@@ -20,11 +20,11 @@ def read():
 def needs_update():
     if not os.path.isfile(PRICE_PATH):
         return True
-    
+
     try:
         prices = read()
         max_datetime = max(x['datetime'] for x in prices)
         now = datetime.utcnow()
-        return max_datetime.date() == now.date() and now.hour > 13
+        return max_datetime.date() == now.date() and now.hour > 12
     except:
         return True
