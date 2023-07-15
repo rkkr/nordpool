@@ -1,5 +1,5 @@
 import json, os
-from datetime import datetime
+from datetime import datetime, timedelta, timezone
 
 DIR_PATH = os.path.dirname(os.path.realpath(__file__))
 PRICE_PATH = os.path.join(os.path.dirname(DIR_PATH), 'prices.json')
@@ -21,10 +21,8 @@ def needs_update():
     if not os.path.isfile(PRICE_PATH):
         return True
 
-    try:
-        prices = read()
-        max_datetime = max(x['datetime'] for x in prices)
-        now = datetime.utcnow()
-        return max_datetime.date() == now.date() and now.hour > 12
-    except:
+    prices = read()
+    if len(prices) == 0:
         return True
+    max_datetime = max(x['datetime'] for x in prices)
+    return max_datetime - timedelta(hours = 10) < datetime.now(timezone.utc)
