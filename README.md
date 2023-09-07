@@ -1,3 +1,7 @@
+# plug token configuration
+
+[miio](https://github.com/aholstenson/miio/blob/master/docs/management.md)
+
 # crontab config
 ```
 45 * * * * /var/www/nordpool/.venv/bin/python3 /var/www/nordpool/crawler/crawler.py
