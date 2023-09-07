@@ -12,7 +12,7 @@ def _add_taxes(datetime, price):
 
     price = price / 1000 # kWh
     price *= 1.21 # PVM
-    price += 0.02003 # Tiekimo paslauga
+    price += 0.02821 # Tiekimo paslauga
     price += -0.00944 # VIAP
     price += 0.00006 # Skirstymo dedamoji
 
