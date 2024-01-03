@@ -22,10 +22,8 @@
     <tr>
       <td>{{hour}}</td>
       {% for day in days %}
-      <td>{% for price in prices %}
-          {% if price.day == day and price.hour == hour %}
+      <td>{% for price in prices if price.day == day and price.hour == hour %}
             {{ "%.2f"|format(price.price) }}
-          {% endif %}
         {% endfor %}
       {% endfor %}</td>
     </tr>
