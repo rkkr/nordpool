@@ -6,7 +6,7 @@ API_URL = 'https://www.nordpoolgroup.com/api/marketdata/page/53?currency=,EUR,,E
 TIMEOUT = 60
 
 def _parse_dt(date, time, fold):
-    _date = datetime.strptime(date, "%d-%m-%Y").date()
+    _date = datetime.strptime(date, '%d-%m-%Y').date()
     _time = datetime.fromisoformat(time).time()
     _datetime = datetime.combine(_date, _time, ZoneInfo('Europe/Stockholm'))
     if fold:
@@ -15,13 +15,14 @@ def _parse_dt(date, time, fold):
 
     return _datetime.astimezone(timezone.utc)
 
-def download():
-    json = _fetch_json()
+def download(end_date: datetime = None):
+    json = _fetch_json(end_date)
     data = _parse_json(json)
     return data
 
-def _fetch_json():
-    response = requests.get(API_URL, timeout=TIMEOUT)
+def _fetch_json(end_date: datetime = None):
+    url = API_URL if end_date == None else API_URL + '&endDate=' + end_date.strftime('%d-%m-%Y')
+    response = requests.get(url, timeout=TIMEOUT)
     return response.json()
 
 def _parse_json(json):

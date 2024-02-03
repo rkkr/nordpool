@@ -1,2 +1,4 @@
+tzdata
+requests
 Jinja2
 python-miio
