@@ -1,5 +1,4 @@
-from zoneinfo import ZoneInfo
-from datetime import datetime
+from datetime import datetime, timedelta
 
 def add_price(prices):
     for price in prices:
@@ -7,7 +6,7 @@ def add_price(prices):
     return prices
 
 def _add_taxes(timestamp: datetime, price: float):
-    timestamp = timestamp.astimezone(ZoneInfo('Etc/GMT+3')) # LT summer time zone
+    timestamp = timestamp + timedelta(hours=3) # LT summer time zone
     hour = timestamp.time().hour
     weekday = timestamp.weekday()
 
