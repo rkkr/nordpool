@@ -1,5 +1,6 @@
 import nordpool, ignitis, cache
 import os, logging
+from datetime import datetime, timedelta, timezone
 
 DIR_PATH = os.path.dirname(os.path.realpath(__file__))
 
@@ -10,7 +11,7 @@ if __name__ == "__main__":
         if cache.needs_update():
             logging.info('Updating cache')
 
-            prices = nordpool.download()
+            prices = nordpool.download(datetime.now(timezone.utc) + timedelta(days = 1))
             prices = ignitis.add_price(prices)
             cache.save(prices)
     except Exception as e:

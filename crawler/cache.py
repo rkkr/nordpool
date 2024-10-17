@@ -5,10 +5,17 @@ DIR_PATH = os.path.dirname(os.path.realpath(__file__))
 PRICE_PATH = os.path.join(os.path.dirname(DIR_PATH), 'prices.json')
 
 def save(prices):
+    prices = prices + read()
+    cleanup = datetime.now(timezone.utc) - timedelta(days = 7)
+    prices = [p for p in prices if p['datetime'] > cleanup]
+
     with open(PRICE_PATH, 'w') as write:
         json.dump(prices, write, indent = 4, default = str)
 
 def read():
+    if not os.path.isfile(PRICE_PATH):
+        return []
+
     with open(PRICE_PATH, 'r') as read:
         prices = json.load(read)
 
@@ -18,9 +25,6 @@ def read():
     return prices
 
 def needs_update():
-    if not os.path.isfile(PRICE_PATH):
-        return True
-
     prices = read()
     if len(prices) == 0:
         return True
