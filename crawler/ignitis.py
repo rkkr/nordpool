@@ -16,7 +16,7 @@ def _add_taxes(timestamp: datetime, price: float):
     price += 0.0 # VIAP
     price += 0.00054 # Skirstymo dedamoji
 
-    if (hour >= 0 and hour < 8) or weekday >= 6: # 24-08 or weekends
+    if (hour >= 0 and hour < 8) or weekday >= 5: # 24-08 or weekends
         price += 0.06050 # Persiuntimo paslauga naktis
     else:
         price += 0.10285 # Persiuntimo paslauga diena

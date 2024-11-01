@@ -12,7 +12,10 @@ def download(date: datetime):
 def _fetch_json(date: datetime):
     url = API_URL + date.strftime('%Y-%m-%d')
     response = requests.get(url, timeout=TIMEOUT)
-    return response.json()
+    if response.status_code == 200:
+        return response.json()
+    else:
+        return []
 
 def _parse_json(json):
     _hour_prices = []

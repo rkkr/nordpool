@@ -5,6 +5,9 @@ DIR_PATH = os.path.dirname(os.path.realpath(__file__))
 PRICE_PATH = os.path.join(os.path.dirname(DIR_PATH), 'prices.json')
 
 def save(prices):
+    if len(prices) == 0:
+        return
+
     prices = prices + read()
     cleanup = datetime.now(timezone.utc) - timedelta(days = 7)
     prices = [p for p in prices if p['datetime'] > cleanup]
