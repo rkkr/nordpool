@@ -3,3 +3,4 @@ prices.json
 .venv
 plugs/config.py
 log.txt
+*.csv

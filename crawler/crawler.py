@@ -1,4 +1,4 @@
-import nordpool, ignitis, cache
+import nordpool, taxes, cache
 import os, logging
 from datetime import datetime, timedelta, timezone
 
@@ -12,7 +12,7 @@ if __name__ == "__main__":
             logging.info('Updating cache')
 
             prices = nordpool.download(datetime.now(timezone.utc) + timedelta(days = 1))
-            prices = ignitis.add_price(prices)
+            prices = taxes.add_price(prices)
             cache.save(prices)
     except Exception as e:
         logging.exception('Exception')
