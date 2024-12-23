@@ -13,7 +13,7 @@ def save(prices):
     prices = [p for p in prices if p['datetime'] > cleanup]
 
     with open(PRICE_PATH, 'w') as write:
-        json.dump(prices, write, indent = 4, default = str)
+        json.dump(prices, write, default = str)
 
 def read():
     if not os.path.isfile(PRICE_PATH):

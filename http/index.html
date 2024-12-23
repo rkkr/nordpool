@@ -1,4 +1,6 @@
+<!DOCTYPE html>
 <html>
+<head>
   <style>
     table, th, td {
       border: 1px solid black;
@@ -7,27 +9,19 @@
       text-align: right;
     }
   </style>
-<head>
   <title>Nordpool</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
 </head>
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<table>
-  <tr>
-    <th></th>
-    {% for day in days %}
-    <th>{{ day }}</th>
-    {% endfor %}
-  </tr>
-  {% for hour in range(24) %}
+<body>
+  <table>
     <tr>
-      <td>{{hour}}</td>
-      {% for day in days %}
-      <td>{% for price in prices if price.day == day and price.hour == hour %}
-            {{ "%.2f"|format(price.price) }}
-        {% endfor %}
-      {% endfor %}</td>
+      <th></th>{% for day in days %}<th>{{ day }}</th>{% endfor %}
     </tr>
-  {% endfor %}
-</table>
-<p>Month avg: {{"%.2f"|format(avg)}}</p>
+    {% for hour in range(24) %}<tr>
+      <td>{{hour}}</td>
+      {% for day in days %}<td>{% for price in prices if price.day == day and price.hour == hour %}{{ "%.2f"|format(price.price) }}{% endfor %}</td>{% endfor %}
+    </tr>{% endfor %}
+  </table>
+  <p>Month avg: {{"%.2f"|format(avg)}}</p>
+</body>
 </html>
