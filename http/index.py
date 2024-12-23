@@ -17,6 +17,11 @@ def format_prices(prices):
         price['hour'] = price['datetime'].astimezone().hour
     return prices
 
+def get_avg(prices):
+    month = datetime.now().month
+    month_prices = [p['price'] for p in prices if p['datetime'].month == month]
+    return sum(month_prices) / len(month_prices)
+
 def render():
     with open(TEMPLATE_PATH, 'r') as read:
         template = jinja2.Template(read.read())
@@ -24,7 +29,8 @@ def render():
     days = get_days()
     prices = cache.read()
     prices = format_prices(prices)
-    return template.render({'prices': prices, 'days': days})
+    month_avg = get_avg(prices)
+    return template.render({'prices': prices, 'days': days, 'avg': month_avg})
 
 def handler(req):
     from mod_python import apache

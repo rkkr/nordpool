@@ -9,7 +9,7 @@ def save(prices):
         return
 
     prices = prices + read()
-    cleanup = datetime.now(timezone.utc) - timedelta(days = 7)
+    cleanup = datetime.now(timezone.utc) - timedelta(days = 90)
     prices = [p for p in prices if p['datetime'] > cleanup]
 
     with open(PRICE_PATH, 'w') as write:
