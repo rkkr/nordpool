@@ -1,5 +1,5 @@
 *.pyc
-prices.json
+*.json
 .venv
 plugs/config.py
 log.txt
