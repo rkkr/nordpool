@@ -30,7 +30,7 @@ def render():
     days = get_days()
     prices = cache.read()
     month_avg = get_avg(prices)
-    formatterd = format_prices(prices)
+    formatted = format_prices(prices)
     return template.render({'prices': formatted, 'days': days, 'avg': month_avg})
 
 def handler(req):
