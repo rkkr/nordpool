@@ -2,7 +2,9 @@ import nordpool, taxes, cache
 import os, logging
 from datetime import datetime, timedelta, timezone
 
-logging.basicConfig(filename='/var/log/nordpool', filemode='a', format='%(asctime)s - %(levelname)s - %(message)s', level=logging.INFO)
+DIR_PATH = os.path.dirname(os.path.realpath(__file__))
+
+logging.basicConfig(filename=os.path.join(os.path.dirname(DIR_PATH), 'log.txt'), filemode='a', format='%(asctime)s - %(levelname)s - %(message)s', level=logging.INFO)
 
 if __name__ == "__main__":
     try:
