@@ -6,32 +6,27 @@ TEMPLATE_PATH = os.path.join(DIR_PATH, 'index.html')
 sys.path.append(os.path.dirname(DIR_PATH))
 from crawler import cache
 
-def get_days():
-    today = datetime.datetime.now().date()
-    return [today + datetime.timedelta(days=1), today, today - datetime.timedelta(days=1)]
-
 def format_prices(prices):
-    recent = datetime.datetime.now(datetime.UTC) - datetime.timedelta(days=2)
-    prices = [p for p in prices if p['datetime'] > recent]
+    recent = datetime.datetime.now(datetime.UTC).replace(minute=0, second=0, microsecond=0)
+    prices = [p for p in prices if p['datetime'] >= recent]
     for price in prices:
-        price['day'] = price['datetime'].astimezone().date()
-        price['hour'] = price['datetime'].astimezone().hour
+        _datetime = price['datetime'].astimezone()
+        price['hour'] = f"{_datetime.date()} {_datetime.hour:02}"
     return prices
 
-def get_avg(prices):
-    month = datetime.datetime.now().month
-    month_prices = [p['price'] for p in prices if p['datetime'].month == month]
-    return sum(month_prices) / len(month_prices)
+def get_hours(prices):
+    dist = list(set([p['hour'] for p in prices]))
+    dist.sort()
+    return dist
 
 def render():
     with open(TEMPLATE_PATH, 'r') as read:
         template = jinja2.Template(read.read())
 
-    days = get_days()
     prices = cache.read()
-    month_avg = get_avg(prices)
     formatted = format_prices(prices)
-    return template.render({'prices': formatted, 'days': days, 'avg': month_avg})
+    hours = get_hours(formatted)
+    return template.render({'prices': formatted, 'hours': hours})
 
 def handler(req):
     from mod_python import apache

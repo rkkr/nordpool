@@ -5,7 +5,10 @@
     table, th, td {
       border: 1px solid black;
       border-collapse: collapse;
-      padding: 2px;
+      padding-top: 2px;
+      padding-bottom: 2px;
+      padding-left: 5px;
+      padding-right: 5px;
       text-align: right;
     }
   </style>
@@ -15,13 +18,12 @@
 <body>
   <table>
     <tr>
-      <th></th>{% for day in days %}<th>{{ day }}</th>{% endfor %}
+      <th></th><th>:00</th><th>:15</th><th>:30</th><th>:45</th>
     </tr>
-    {% for hour in range(24) %}<tr>
+    {% for hour in hours %}<tr>
       <td>{{hour}}</td>
-      {% for day in days %}<td>{% for price in prices if price.day == day and price.hour == hour %}{{ "%.2f"|format(price.price) }}{% endfor %}</td>{% endfor %}
+      {% for price in prices if price.hour == hour %}<td>{{ "%.2f"|format(price.price) }}</td>{% endfor %}
     </tr>{% endfor %}
   </table>
-  <p>Month avg: {{"%.2f"|format(avg)}}</p>
 </body>
 </html>
