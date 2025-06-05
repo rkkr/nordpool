@@ -11,13 +11,27 @@ def format_prices(prices):
     prices = [p for p in prices if p['datetime'] >= recent]
     for price in prices:
         _datetime = price['datetime'].astimezone()
-        price['hour'] = f"{_datetime.date()} {_datetime.hour:02}"
+        price['date'] = f"{_datetime.date()}"
+        price['hour'] = f"{_datetime.hour:02}"
+    prices.sort(key=lambda price: price['datetime'])
     return prices
 
 def get_hours(prices):
-    dist = list(set([p['hour'] for p in prices]))
-    dist.sort()
-    return dist
+    output = []
+    days = set()
+    dayhours = set()
+    for price in prices:
+        dayhour = price['date'] + ' ' + price['hour']
+        if dayhour in dayhours:
+            continue
+        dayhours.add(dayhour)
+        if price['date'] in days:
+            dayhour = price['hour']
+        else:
+            days.add(price['date'])
+        output.append({'date': price['date'], 'hour': price['hour'], 'display': dayhour})
+    
+    return output
 
 def render():
     with open(TEMPLATE_PATH, 'r') as read:

@@ -21,8 +21,8 @@
       <th></th><th>:00</th><th>:15</th><th>:30</th><th>:45</th>
     </tr>
     {% for hour in hours %}<tr>
-      <td>{{hour}}</td>
-      {% for price in prices if price.hour == hour %}<td>{{ "%.2f"|format(price.price) }}</td>{% endfor %}
+      <td>{{hour.display}}</td>
+      {% for price in prices if price.hour == hour.hour and price.date == hour.date %}<td>{{ "%.2f"|format(price.price) }}</td>{% endfor %}
     </tr>{% endfor %}
   </table>
 </body>
