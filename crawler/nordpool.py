@@ -1,7 +1,7 @@
 import requests
 from datetime import datetime
 
-API_URL = 'https://dataportal-api.nordpoolgroup.com/api/DayAheadPriceIndices?date=%s&market=DayAhead&indexNames=LT&currency=EUR&resolutionInMinutes=15'
+API_URL = 'https://dataportal-api.nordpoolgroup.com/api/DayAheadPrices?date=%s&market=DayAhead&deliveryArea=LT&currency=EUR'
 TIMEOUT = 60
 
 def download(date: datetime):
@@ -22,7 +22,7 @@ def _parse_json(json):
         return None
     _hour_prices = []
 
-    for row in json['multiIndexEntries']:
+    for row in json['multiAreaEntries']:
         _datetime = datetime.fromisoformat(row['deliveryStart'])
         _price = row['entryPerArea']['LT']
         _hour_prices.append({'datetime': _datetime, 'price_np': _price})
