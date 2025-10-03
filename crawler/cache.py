@@ -32,4 +32,4 @@ def needs_update():
     if len(prices) == 0:
         return True
     max_datetime = max(x['datetime'] for x in prices)
-    return max_datetime - timedelta(hours = 10) < datetime.now(timezone.utc)
+    return max_datetime - timedelta(hours = 12) < datetime.now(timezone.utc)

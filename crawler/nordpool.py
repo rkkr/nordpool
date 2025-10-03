@@ -20,6 +20,8 @@ def _fetch_json(date: datetime):
 def _parse_json(json):
     if json is None:
         return None
+    if json['areaStates'][0]['state'] != 'Final':
+        return None
     _hour_prices = []
 
     for row in json['multiAreaEntries']:

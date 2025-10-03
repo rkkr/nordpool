@@ -22,7 +22,7 @@
     </tr>
     {% for hour in hours %}<tr>
       <th>{{hour.display}}</th>
-      {% for price in prices if price.hour == hour.hour and price.date == hour.date %}<td>{{ "%.2f"|format(price.price) }}</td>{% endfor %}
+      {% for minute in [':00', ':15', ':30', ':45'] %}<td>{% if hour.date + ' ' + hour.hour + minute in prices %} {{ "%.2f"|format(prices[hour.date + ' ' + hour.hour + minute]) }} {% endif %}</td>{% endfor %}
     </tr>{% endfor %}
   </table>
 </body>

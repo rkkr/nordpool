@@ -1,4 +1,5 @@
-import jinja2, os, sys, datetime
+import jinja2, os, sys
+from datetime import datetime, timedelta, timezone
 
 DIR_PATH = os.path.dirname(os.path.realpath(__file__))
 TEMPLATE_PATH = os.path.join(DIR_PATH, 'index.html')
@@ -6,30 +7,36 @@ TEMPLATE_PATH = os.path.join(DIR_PATH, 'index.html')
 sys.path.append(os.path.dirname(DIR_PATH))
 from crawler import cache
 
-def format_prices(prices):
-    recent = datetime.datetime.now(datetime.UTC).replace(minute=0, second=0, microsecond=0)
+def filter_recent(prices):
+    recent = datetime.now(timezone.utc) - timedelta(minutes = 15)
     prices = [p for p in prices if p['datetime'] >= recent]
-    for price in prices:
-        _datetime = price['datetime'].astimezone()
-        price['date'] = f"{_datetime.date()}"
-        price['hour'] = f"{_datetime.hour:02}"
     prices.sort(key=lambda price: price['datetime'])
     return prices
+
+def format_prices(prices):
+    formatted = {}
+    for price in prices:
+        _datetime = price['datetime'].astimezone()
+        formatted[f"{_datetime.date()} {_datetime.hour:02}:{_datetime.minute:02}"] = price['price']
+    return formatted
 
 def get_hours(prices):
     output = []
     days = set()
     dayhours = set()
     for price in prices:
-        dayhour = price['date'] + ' ' + price['hour']
-        if dayhour in dayhours:
+        _datetime = price['datetime'].astimezone()
+        _day = f"{_datetime.date()}"
+        _hour = f"{_datetime.hour:02}"
+        _dayhour = _day + ' ' + _hour
+        if _dayhour in dayhours:
             continue
-        dayhours.add(dayhour)
-        if price['date'] in days:
-            dayhour = price['hour']
+        dayhours.add(_dayhour)
+        if _day in days:
+            _dayhour = _hour
         else:
-            days.add(price['date'])
-        output.append({'date': price['date'], 'hour': price['hour'], 'display': dayhour})
+            days.add(_day)
+        output.append({'date': _day, 'hour': _hour, 'display': _dayhour})
     
     return output
 
@@ -38,8 +45,9 @@ def render():
         template = jinja2.Template(read.read())
 
     prices = cache.read()
+    prices = filter_recent(prices)
+    hours = get_hours(prices)
     formatted = format_prices(prices)
-    hours = get_hours(formatted)
     return template.render({'prices': formatted, 'hours': hours})
 
 def handler(req):
