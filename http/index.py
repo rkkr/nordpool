@@ -23,16 +23,16 @@ def format_prices(prices):
 def get_hours(prices):
     output = []
     days = set()
-    dayhours = set()
+    keys = set()
     for price in prices:
         _datetime = price['datetime']
         _key = f"{_datetime.date()} {_datetime.hour:02}"
         _day = f"{_datetime.astimezone().date()}"
         _hour = f"{_datetime.astimezone().hour:02}"
         _dayhour = _day + ' ' + _hour
-        if _dayhour in dayhours:
+        if _key in keys:
             continue
-        dayhours.add(_dayhour)
+        keys.add(_key)
         if _day in days:
             _dayhour = _hour
         else:
