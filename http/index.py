@@ -16,7 +16,7 @@ def filter_recent(prices):
 def format_prices(prices):
     formatted = {}
     for price in prices:
-        _datetime = price['datetime'].astimezone()
+        _datetime = price['datetime']
         formatted[f"{_datetime.date()} {_datetime.hour:02}:{_datetime.minute:02}"] = price['price']
     return formatted
 
@@ -25,9 +25,10 @@ def get_hours(prices):
     days = set()
     dayhours = set()
     for price in prices:
-        _datetime = price['datetime'].astimezone()
-        _day = f"{_datetime.date()}"
-        _hour = f"{_datetime.hour:02}"
+        _datetime = price['datetime']
+        _key = f"{_datetime.date()} {_datetime.hour:02}"
+        _day = f"{_datetime.astimezone().date()}"
+        _hour = f"{_datetime.astimezone().hour:02}"
         _dayhour = _day + ' ' + _hour
         if _dayhour in dayhours:
             continue
@@ -36,7 +37,7 @@ def get_hours(prices):
             _dayhour = _hour
         else:
             days.add(_day)
-        output.append({'date': _day, 'hour': _hour, 'display': _dayhour})
+        output.append({'key': _key, 'display': _dayhour})
     
     return output
 
